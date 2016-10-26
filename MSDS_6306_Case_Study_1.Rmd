@@ -1,0 +1,29 @@
+---
+title:  "MSDS_6306_Case_Study_1"
+author: "Jim Brittain"
+date:   "October 26, 2016"
+output: 
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Download files to worling directory
+
+
+```{r download files, echo=TRUE}
+# Adjust working directory as needed
+MainDir <- "D:\\Users\\Jim\\SMU\\MSDS 6306 DOING DATA SCIENCE\\GIT\\MSDS_6306_Case_Study_1"
+setwd(MainDir)
+
+if (file.exists("Download_Files")){
+    setwd(file.path(MainDir, "Download_Files"))
+  } else {
+    dir.create(file.path(MainDir, "Download_Files"))
+    setwd(file.path(mainDir, "Download_Files"))
+  }
+```
+
