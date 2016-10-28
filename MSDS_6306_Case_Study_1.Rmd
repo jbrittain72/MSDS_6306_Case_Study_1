@@ -9,21 +9,44 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
 
-## Download files to worling directory
-
-
-```{r download files, echo=TRUE}
-# Adjust working directory as needed
+## Adjust working directory as needed
 MainDir <- "D:\\Users\\Jim\\SMU\\MSDS 6306 DOING DATA SCIENCE\\GIT\\MSDS_6306_Case_Study_1"
 setwd(MainDir)
-
-if (file.exists("Download_Files")){
-    setwd(file.path(MainDir, "Download_Files"))
-  } else {
-    dir.create(file.path(MainDir, "Download_Files"))
-    setwd(file.path(mainDir, "Download_Files"))
-  }
 ```
+
+## Call each code section's make file
+
+### Download the data files
+```{r download files, echo=TRUE}
+source(file.path(MainDir, "Download_Files.R"), echo=TRUE, verbos=TRUE, keep.source=TRUE)
+```
+
+### Read and Clean files
+```{r Read and Clean files, echo=TRUE}
+source(file.path(MainDir, "ReadNClean_Files.R"), echo=TRUE)
+```
+
+### Merge and Analyze files
+```{r Merge and Analyze files, echo=TRUE}
+#source(file.path(MainDir, "MergeNAnalyze_Files.R"), echo=TRUE)
+
+# Do a Left join (output as FULL) want to keep all records in GDP
+Full <- merge(x=GDP, y=EdStats, by="CountryCode", all.x=TRUE)
+dim(Full)
+
+# Do a second merge to see if there were any records that did not match the GDP
+Match <- merge(x=GDP, y=EdStats, by="CountryCode")
+dim(Match)
+
+# Sort the data frame by GDP
+Full <- Full[order(Full$GDP),]
+
+# Print the 13th observation
+Full[13,]
+
+Full[,1:4]
+
+```
+
 
