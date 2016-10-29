@@ -33,6 +33,9 @@ GDP <- GDP[1:214,]
 # Remove commas and convert GDPDollars to numeric
 GDP$GDPDollars <- gsub(",","", GDP$GDPDollars)
 GDP$GDPDollars <- as.numeric(GDP$GDPDollars)
+# Convert Ranking to numeric
+GDP$Ranking <- as.numeric(GDP$Ranking)
+
 
 # Get a count of NAs for each variable of interest
 summary(GDP)
@@ -48,12 +51,9 @@ tail(EdStatsRaw)
 
 # Drop records that are regional agregates (All have missing Region)
 EdStats <- subset(x=EdStats, EdStats$Region!="")
+# Keep only the variables that I am interested in 
+EdStats <- EdStats[1:4] 
+summary(EdStats)
 
 # Look at CountryCodes
 table(EdStats$CountryCode)
-dim(EdStats)
-head(EdStats)
-tail(EdStats)
-
-# Get a count of NAs for each variable of interest
-summary(EdStats)

@@ -123,60 +123,50 @@ $(document).ready(function () {
 </div>
 
 
-<div id="call-each-code-sections-make-file" class="section level2">
-<h2>Call each code section’s make file</h2>
+<div id="introduction" class="section level3">
+<h3>Introduction</h3>
+<p>In this analysis report we plan to look at the possible relation of various countries’ Gross Domestic Product (GDP) and average income for the given country. We will be using data available from the World Bank’s website: data.worldbank.org. We plan to do some high-level analysis of these two variables for the various countries. It is our hope that this analysis may show some promise for further statistical analysis in the future.</p>
+</div>
+<div id="call-each-code-sections-make-file" class="section level3">
+<h3>Call each code section’s make file</h3>
+</div>
 <div id="download-the-data-files" class="section level3">
 <h3>Download the data files</h3>
-<pre class="r"><code>source(file.path(MainDir, &quot;Download_Files.R&quot;), echo=TRUE, verbos=TRUE, keep.source=TRUE)</code></pre>
-<pre><code>## 'envir' chosen:&lt;environment: R_GlobalEnv&gt;
-## encoding = &quot;native.enc&quot; chosen
-## --&gt; parsed 3 expressions; now eval(.)ing them:
-## 
-## &gt;&gt;&gt;&gt; eval(expression_nr. 1 )
-##       =================
-## 
+<pre class="r"><code>source(file.path(MainDir, &quot;Code&quot;, &quot;Download_Files.R&quot;), echo = TRUE, keep.source = TRUE)</code></pre>
+<pre><code>## 
 ## &gt; ############################################
 ## &gt; ## Download Case Study 1 Data Files
 ## &gt; ## Jim Brittain
 ## &gt; ## 2016-10-27
 ## &gt; ############################# .... [TRUNCATED] 
-## curr.fun: symbol if
-##  .. after 'expression(if (file.exists(&quot;Download_Files&quot;)){''    setwd(file.path(MainDir, &quot;Download_Files&quot;))''  } else {''    dir.create(file.path(MainDir, &quot;Download_Files&quot;))''    setwd(file.path(MainDir, &quot;Download_Files&quot;))''})'
-## 
-## &gt;&gt;&gt;&gt; eval(expression_nr. 2 )
-##       =================
 ## 
 ## &gt; # Download files to Download folder
 ## &gt; download.file(url=&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv&quot;,
 ## +               destfile=&quot; ...&quot; ... [TRUNCATED] 
-## curr.fun: symbol download.file
-##  .. after 'expression(download.file(url=&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv&quot;,''              destfile=&quot;GDP.csv&quot;))'
 ## 
-## &gt;&gt;&gt;&gt; eval(expression_nr. 3 )
-##       =================
-## 
-## &gt; download.file(url=&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv&quot;,                   destfile=&quot;EDSTATS_Country.csv&quot;)
-## curr.fun: symbol download.file
-##  .. after 'expression(download.file(url=&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv&quot;,                   destfile=&quot;EDSTATS_Country.csv&quot;))'</code></pre>
+## &gt; download.file(url=&quot;https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv&quot;,                   destfile=&quot;EDSTATS_Country.csv&quot;)</code></pre>
 </div>
-</div>
-<div id="read-and-clean-files" class="section level2">
-<h2>Read and CLean files</h2>
-<pre class="r"><code>source(file.path(MainDir, &quot;ReadNClean_Files.R&quot;), echo=TRUE)</code></pre>
+<div id="read-and-clean-files" class="section level3">
+<h3>Read and Clean files</h3>
+<pre class="r"><code>source(file.path(MainDir, &quot;Code&quot;, &quot;ReadNClean_Files.R&quot;), echo = TRUE, keep.source = TRUE)</code></pre>
 <pre><code>## 
-## &gt; setwd(file.path(MainDir, &quot;Download_Files&quot;))
+## &gt; ############################################
+## &gt; ## Read-in and Clean Case Study 1 Data Files
+## &gt; ## Jim Brittain
+## &gt; ## 2016-10-27
+## &gt; #################### .... [TRUNCATED] 
 ## 
 ## &gt; getwd()
 ## [1] &quot;D:/Users/Jim/SMU/MSDS 6306 DOING DATA SCIENCE/GIT/MSDS_6306_Case_Study_1/Download_Files&quot;
 ## 
-## &gt; GDPRaw &lt;- read.csv(file = &quot;GDP.csv&quot;, header = FALSE)
+## &gt; GDPRaw     &lt;- read.csv(file=&quot;GDP.csv&quot;, header=FALSE)
 ## 
-## &gt; EdStatsRaw &lt;- read.csv(file = &quot;EDSTATS_Country.CSV&quot;, 
-## +     header = TRUE)
+## &gt; EdStatsRaw &lt;- read.csv(file=&quot;EDSTATS_Country.CSV&quot;, header=TRUE)
 ## 
 ## &gt; setwd(MainDir)
 ## 
-## &gt; GDP &lt;- GDPRaw[6:325, ]
+## &gt; # Create a new version of GDP data and clean that one
+## &gt; GDP &lt;- GDPRaw[6:325,]
 ## 
 ## &gt; dim(GDP)
 ## [1] 320  10
@@ -199,15 +189,39 @@ $(document).ready(function () {
 ## 324       NA          NA NA NA  NA
 ## 325       NA          NA NA NA  NA
 ## 
-## &gt; GDP &lt;- GDP[c(1, 2, 4, 5)]
+## &gt; # Keep only the 4 populated variables
+## &gt; GDP &lt;- GDP[c(1,2,4,5)]
 ## 
-## &gt; GDP &lt;- subset(x = GDP, GDP$V1 != &quot;&quot;)
+## &gt; # Drop records where Country Code is blank
+## &gt; GDP &lt;- subset(x=GDP, GDP$V1!=&quot;&quot;)
 ## 
-## &gt; names(GDP) &lt;- c(&quot;CountryCode&quot;, &quot;Ranking&quot;, &quot;Country&quot;, 
-## +     &quot;GDP&quot;)
+## &gt; names(GDP) &lt;- c(&quot;CountryCode&quot;,&quot;Ranking&quot;,&quot;Country&quot;,&quot;GDPDollars&quot;)
 ## 
-## &gt; GDP &lt;- GDP[1:214, ]
+## &gt; # Drop records after row 220 
+## &gt; # because at that point the original file lists subtotals by various groups
+## &gt; GDP &lt;- GDP[1:214,] 
 ## 
+## &gt; # Remove commas and convert GDPDollars to numeric
+## &gt; GDP$GDPDollars &lt;- gsub(&quot;,&quot;,&quot;&quot;, GDP$GDPDollars)
+## 
+## &gt; GDP$GDPDollars &lt;- as.numeric(GDP$GDPDollars)</code></pre>
+<pre><code>## Warning: NAs introduced by coercion</code></pre>
+<pre><code>## 
+## &gt; # Convert Ranking to numeric
+## &gt; GDP$Ranking &lt;- as.numeric(GDP$Ranking)
+## 
+## &gt; # Get a count of NAs for each variable of interest
+## &gt; summary(GDP)
+##   CountryCode     Ranking                 Country      GDPDollars      
+##  ABW    :  1   Min.   :  1.00   Afghanistan   :  1   Min.   :      40  
+##  ADO    :  1   1st Qu.: 32.25   Albania       :  1   1st Qu.:    7005  
+##  AFG    :  1   Median : 85.50   Algeria       :  1   Median :   27638  
+##  AGO    :  1   Mean   : 86.20   American Samoa:  1   Mean   :  377652  
+##  ALB    :  1   3rd Qu.:137.75   Andorra       :  1   3rd Qu.:  205289  
+##  ARE    :  1   Max.   :191.00   Angola        :  1   Max.   :16244600  
+##  (Other):208                    (Other)       :208   NA's   :24        
+## 
+## &gt; # Look at CountryCodes
 ## &gt; table(GDP$CountryCode)
 ## 
 ##     ABW ADO AFG AGO ALB ARE ARG ARM ASM ATG AUS AUT AZE BDI BEL BEN BFA 
@@ -237,6 +251,7 @@ $(document).ready(function () {
 ## VCT VEN VIR VNM VUT WBG WLD WSM YEM ZAF ZAR ZMB ZWE 
 ##   1   1   1   1   1   1   0   1   1   1   1   1   1 
 ## 
+## &gt; # Create a new version of GDP data and clean that one
 ## &gt; EdStats &lt;- EdStatsRaw
 ## 
 ## &gt; dim(EdStatsRaw)
@@ -442,36 +457,237 @@ $(document).ready(function () {
 ## 233            ZM        ZM           Zambia          Zambia
 ## 234            ZW        ZW         Zimbabwe        Zimbabwe
 ## 
-## &gt; EdStats &lt;- subset(x = EdStats, EdStats$Region == &quot;&quot;)
+## &gt; # Drop records that are regional agregates (All have missing Region)
+## &gt; EdStats &lt;- subset(x=EdStats, EdStats$Region!=&quot;&quot;)
 ## 
+## &gt; # Keep only the variables that I am interested in 
+## &gt; EdStats &lt;- EdStats[1:4] 
+## 
+## &gt; summary(EdStats)
+##   CountryCode                   Long.Name                 Income.Group
+##  ABW    :  1   American Samoa        :  1                       : 0   
+##  ADO    :  1   Antigua and Barbuda   :  1   High income: nonOECD:37   
+##  AFG    :  1   Arab Republic of Egypt:  1   High income: OECD   :30   
+##  AGO    :  1   Argentine Republic    :  1   Low income          :40   
+##  ALB    :  1   Aruba                 :  1   Lower middle income :56   
+##  ARE    :  1   Barbados              :  1   Upper middle income :47   
+##  (Other):204   (Other)               :204                             
+##                         Region  
+##  Europe &amp; Central Asia     :57  
+##  Sub-Saharan Africa        :47  
+##  Latin America &amp; Caribbean :38  
+##  East Asia &amp; Pacific       :36  
+##  Middle East &amp; North Africa:21  
+##  South Asia                : 8  
+##  (Other)                   : 3  
+## 
+## &gt; # Look at CountryCodes
 ## &gt; table(EdStats$CountryCode)
 ## 
 ## ABW ADO AFG AGO ALB ARE ARG ARM ASM ATG AUS AUT AZE BDI BEL BEN BFA BGD 
-##   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
+##   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 
 ## BGR BHR BHS BIH BLR BLZ BMU BOL BRA BRB BRN BTN BWA CAF CAN CHE CHI CHL 
-##   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
+##   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 
 ## CHN CIV CMR COG COL COM CPV CRI CUB CYM CYP CZE DEU DJI DMA DNK DOM DZA 
-##   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
+##   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 
 ## EAP EAS ECA ECS ECU EGY EMU ERI ESP EST ETH FIN FJI FRA FRO FSM GAB GBR 
-##   1   1   1   1   0   0   1   0   0   0   0   0   0   0   0   0   0   0 
+##   0   0   0   0   1   1   0   1   1   1   1   1   1   1   1   1   1   1 
 ## GEO GHA GIN GMB GNB GNQ GRC GRD GRL GTM GUM GUY HIC HKG HND HPC HRV HTI 
-##   0   0   0   0   0   0   0   0   0   0   0   0   1   0   0   1   0   0 
+##   1   1   1   1   1   1   1   1   1   1   1   1   0   1   1   0   1   1 
 ## HUN IDN IMY IND IRL IRN IRQ ISL ISR ITA JAM JOR JPN KAZ KEN KGZ KHM KIR 
-##   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
+##   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 
 ## KNA KOR KSV KWT LAC LAO LBN LBR LBY LCA LCN LDC LIC LIE LKA LMC LMY LSO 
-##   0   0   0   0   1   0   0   0   0   0   1   1   1   0   0   1   1   0 
+##   1   1   1   1   0   1   1   1   1   1   0   0   0   1   1   0   0   1 
 ## LTU LUX LVA MAC MAR MCO MDA MDG MDV MEA MEX MHL MIC MKD MLI MLT MMR MNA 
-##   0   0   0   0   0   0   0   0   0   1   0   0   1   0   0   0   0   1 
+##   1   1   1   1   1   1   1   1   1   0   1   1   0   1   1   1   1   0 
 ## MNE MNG MNP MOZ MRT MUS MWI MYS NAC NAM NCL NER NGA NIC NLD NOC NOR NPL 
-##   0   0   0   0   0   0   0   0   1   0   0   0   0   0   0   1   0   0 
+##   1   1   1   1   1   1   1   1   0   1   1   1   1   1   1   0   1   1 
 ## NZL OEC OMN PAK PAN PER PHL PLW PNG POL PRI PRK PRT PRY PYF QAT ROM RUS 
-##   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
+##   1   0   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 
 ## RWA SAS SAU SDN SEN SGP SLB SLE SLV SMR SOM SRB SSA SSF STP SUR SVK SVN 
-##   0   1   0   0   0   0   0   0   0   0   0   0   1   1   0   0   0   0 
+##   1   0   1   1   1   1   1   1   1   1   1   1   0   0   1   1   1   1 
 ## SWE SWZ SYC SYR TCA TCD TGO THA TJK TKM TMP TON TTO TUN TUR TUV TZA UGA 
-##   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 
+##   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1 
 ## UKR UMC URY USA UZB VCT VEN VIR VNM VUT WBG WLD WSM YEM ZAF ZAR ZMB ZWE 
-##   0   1   0   0   0   0   0   0   0   0   0   1   0   0   0   0   0   0</code></pre>
+##   1   0   1   1   1   1   1   1   1   1   1   0   1   1   1   1   1   1</code></pre>
+</div>
+<div id="merge-and-analyze-files" class="section level3">
+<h3>Merge and Analyze files</h3>
+<pre class="r"><code>source(file.path(MainDir,&quot;Code&quot;,&quot;MergeNAnalyze_Files.R&quot;), echo=TRUE, keep.source=TRUE)</code></pre>
+<pre><code>## 
+## &gt; ############################################
+## &gt; ## Merge and Analize Case Study 1 Data Files
+## &gt; ## Jim Brittain
+## &gt; ## 2016-10-28
+## &gt; #################### .... [TRUNCATED] 
+## 
+## &gt; ####################################################################################
+## &gt; # 1. Merge the data based on the country shortcode. How many  .... [TRUNCATED] 
+##   CountryCode                   Long.Name                 Income.Group
+##  ABW    :  1   American Samoa        :  1                       : 0   
+##  ADO    :  1   Antigua and Barbuda   :  1   High income: nonOECD:37   
+##  AFG    :  1   Arab Republic of Egypt:  1   High income: OECD   :30   
+##  AGO    :  1   Argentine Republic    :  1   Low income          :40   
+##  ALB    :  1   Aruba                 :  1   Lower middle income :56   
+##  ARE    :  1   Barbados              :  1   Upper middle income :47   
+##  (Other):204   (Other)               :204                             
+##                         Region  
+##  Europe &amp; Central Asia     :57  
+##  Sub-Saharan Africa        :47  
+##  Latin America &amp; Caribbean :38  
+##  East Asia &amp; Pacific       :36  
+##  Middle East &amp; North Africa:21  
+##  South Asia                : 8  
+##  (Other)                   : 3  
+## 
+## &gt; # Do a Left join (output as FULL) want to keep all records in GDP
+## &gt; Full &lt;- merge(x=GDP, y=EdStats, by=&quot;CountryCode&quot;, all.x=TRUE)
+## 
+## &gt; dim(Full)
+## [1] 214   7
+## 
+## &gt; # Do a second merge to see if there were any records that did not match the GDP
+## &gt; Match &lt;- merge(x=GDP, y=EdStats, by=&quot;CountryCode&quot;)
+## 
+## &gt; dim(Match)
+## [1] 210   7
+## 
+## &gt; ####################################################################################
+## &gt; # 2. Sort the data frame in ascending order by GDP so United  .... [TRUNCATED] 
+## 
+## &gt; # What is the 13th observation?
+## &gt; Full[13,c(&quot;Country&quot;,&quot;Ranking&quot;,&quot;GDPDollars&quot;,&quot;Income.Group&quot;)]
+##                 Country Ranking GDPDollars        Income.Group
+## 103 St. Kitts and Nevis      90        767 Upper middle income
+## 
+## &gt; ####################################################################################
+## &gt; # 3. What are the average GDP rankings for the &quot;High income:  ...&quot; ... [TRUNCATED] 
+## 
+## &gt; HighIncOECD &lt;- HighIncOECD[c(1,2,4,6)]
+## 
+## &gt; summary(HighIncOECD)
+##   CountryCode    Ranking        GDPDollars      
+##  AUS    : 1   Min.   :  3.0   Min.   :   13579  
+##  AUT    : 1   1st Qu.:105.2   1st Qu.:  211147  
+##  BEL    : 1   Median :122.5   Median :  486528  
+##  CAN    : 1   Mean   :110.1   Mean   : 1483917  
+##  CHE    : 1   3rd Qu.:138.5   3rd Qu.: 1480047  
+##  CZE    : 1   Max.   :181.0   Max.   :16244600  
+##  (Other):24                                     
+##                Income.Group
+##                      : 0   
+##  High income: nonOECD: 0   
+##  High income: OECD   :30   
+##  Low income          : 0   
+##  Lower middle income : 0   
+##  Upper middle income : 0   
+##                            
+## 
+## &gt; HighIncNonOECD &lt;- subset(x=Full, Full$Income.Group==&quot;High income: nonOECD&quot;)
+## 
+## &gt; HighIncNonOECD &lt;- HighIncNonOECD[c(1,2,4,6)]
+## 
+## &gt; summary(HighIncNonOECD)
+##   CountryCode    Ranking         GDPDollars                   Income.Group
+##  ABW    : 1   Min.   :  1.00   Min.   :  2584                       : 0   
+##  ADO    : 1   1st Qu.:  1.00   1st Qu.: 12838   High income: nonOECD:37   
+##  ARE    : 1   Median : 19.00   Median : 28373   High income: OECD   : 0   
+##  BHR    : 1   Mean   : 58.65   Mean   :104350   Low income          : 0   
+##  BHS    : 1   3rd Qu.:121.00   3rd Qu.:131205   Lower middle income : 0   
+##  BMU    : 1   Max.   :186.00   Max.   :711050   Upper middle income : 0   
+##  (Other):31                    NA's   :14                                 
+## 
+## &gt; mean(HighIncOECD$Ranking)
+## [1] 110.0667
+## 
+## &gt; mean(HighIncNonOECD$Ranking)
+## [1] 58.64865
+## 
+## &gt; ####################################################################################
+## &gt; # 4. Plot GDP for all countries. 
+## &gt; #    Use ggplot2 to color .... [TRUNCATED] 
+## 
+## &gt; ggplot(FullnonNA, aes(x=Income.Group, y=GDPDollars)) + 
+## +   geom_point(aes(color=Income.Group, size=Ranking)) +
+## +   scale_x_discrete(name=&quot;Income Gr ...&quot; ... [TRUNCATED]</code></pre>
+<p><img src="data:image/png;base64,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" alt /><!-- --></p>
+<pre><code>## 
+## &gt; ####################################################################################
+## &gt; # 5. Cut the GDP ranking into 5 separate quantile groups. 
+## &gt;  .... [TRUNCATED] 
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NA's 
+##       40     7005    27640   377700   205300 16240000       24 
+## 
+## &gt; attach(Full)
+## 
+## &gt; Full$GDPGroup[GDPDollars &lt;= 40]                           &lt;- 1
+## 
+## &gt; Full$GDPGroup[GDPDollars &gt;     40 &amp; GDPDollars &lt;=   7005] &lt;- 2
+## 
+## &gt; Full$GDPGroup[GDPDollars &gt;   7005 &amp; GDPDollars &lt;=  27640] &lt;- 3
+## 
+## &gt; Full$GDPGroup[GDPDollars &gt;  27640 &amp; GDPDollars &lt;= 205300] &lt;- 4
+## 
+## &gt; Full$GDPGroup[GDPDollars &gt; 205300]                        &lt;- 5
+## 
+## &gt; summary(Full$GDPGroup)
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##   1.000   2.250   3.500   3.495   4.750   5.000      24 
+## 
+## &gt; # Assign âlabelsâ to the âformatâ variable (changing variable from numeric to a factor)
+## &gt; GDPLabels &lt;- c(&quot;GDPQ1&quot;,&quot;GDPQ2&quot;,&quot;GDPQ3&quot;,&quot;GDPQ4&quot;,&quot;GD ...&quot; ... [TRUNCATED] 
+## 
+## &gt; Full$GDPGroup &lt;- factor(Full$GDPGroup,labels=GDPLabels)
+## 
+## &gt; summary(Full$GDPGroup)
+## GDPQ1 GDPQ2 GDPQ3 GDPQ4 GDPQ5  NA's 
+##     1    47    47    47    48    24 
+## 
+## &gt; table(Full$GDPGroup,Full$Income.Group)
+##        
+##            High income: nonOECD High income: OECD Low income
+##   GDPQ1  0                    0                 0          0
+##   GDPQ2  0                    4                 0         16
+##   GDPQ3  0                    7                 1         16
+##   GDPQ4  0                    8                 6          5
+##   GDPQ5  0                    4                23          0
+##        
+##         Lower middle income Upper middle income
+##   GDPQ1                   1                   0
+##   GDPQ2                  16                  11
+##   GDPQ3                  14                   8
+##   GDPQ4                  14                  14
+##   GDPQ5                   9                  12</code></pre>
+</div>
+<div id="results" class="section level2">
+<h2>Results:</h2>
+<div id="questions" class="section level3">
+<h3>Questions:</h3>
+<ol style="list-style-type: decimal">
+<li>Merge the data based on the country shortcode. How many of the IDs match?</li>
+</ol>
+<p>Based on a left join we get a resulting data frame of 214 observations. Using a intersection join to see how many of the ID variables matched we get 210 matched.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Sort the data frame in ascending order by GDP so United States is last. What is the 13th country in the resulting data frame?</li>
+</ol>
+<p>After sorting the data by GDP (ascending) we can see that St. Kitts and Nevis is the 13th observation.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>What are the average GDP rankings for the “High income: OECD” and “High income: nonOECD” groups?</li>
+</ol>
+<p>The mean (average) of the “High income: OECD” group is: 110.0667. The mean (average) of the “High income: nonOECD” group is: 58.64865.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Plot the GDP for all of the countries. Use ggplot2 to color your plot by Income Group.</li>
+</ol>
+<p>The plot illustrates that countries in the “High income: OECD” group also tend to have the highest GDP. It also shows a trend of lower incomes related to lower GDP. Because the income categories are presented out of “true” order it is a little difficult to interpret.</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Cut the GDP ranking into 5 separate quantile groups. Make a table versus Income.Group. How many countries are Lower middle income but among the 38 nations with highest GDP?</li>
+</ol>
+<p>The cross tabulation table shows a result of 9 countries where the income falls in the “Lower Middle” group and the income is in the 48 nations that fall into the top GDP quantile group.</p>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<p>Through this cursory analysis of various countries’ Gross Domestic Product (GDP) and average income for the given country we can glean some information of interest. However, this is not a statistical analysis to determine if there is any kind of significant correlation of these two variables. From our limited analysis it does appear to show some evidence that a country with a higher average income level; tends to have a higher GDP. This could lead to more analysis to determine statistical significance of this correlation. Because it is an observational study the statistical outcomes are limited due to unforeseen contributing variables.</p>
+</div>
 </div>
 
 
